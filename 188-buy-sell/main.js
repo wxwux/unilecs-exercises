@@ -1,17 +1,23 @@
-export const findBestTransaction = (days) => {
-  let minBuyPrice = days[0];
-  let profit = days[0] - days[1];
+export const findBestTransaction = days => {
+  let bestBuy = days[0];
+  let bestSell = days[1];
+  let potentialProfit = 0;
+  let profit = bestSell - bestBuy;
 
-  days.forEach(( currentPrice, ndx ) => {
-    // пропускаем первый элемент
+  days.forEach((currentPrice, ndx) => {
     if (ndx === 0) return;
 
-    const potentialProfit = currentPrice - minBuyPrice;
+    potentialProfit = currentPrice - bestBuy;
 
-    profit = Math.max(profit, potentialProfit);
+    if (potentialProfit > profit) {
+      profit = potentialProfit;
+      bestSell = currentPrice;
+    }
 
-    minBuyPrice = Math.min(minBuyPrice, currentPrice);
+    if (currentPrice < bestBuy) {
+      bestBuy = currentPrice;
+    }
   });
 
   return profit;
-}
+};
